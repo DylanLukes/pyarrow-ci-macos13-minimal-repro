@@ -1,0 +1,33 @@
+name: repro
+
+on: [push, workflow_dispatch]
+
+env:
+  STABLE_PYTHON_VERSION: "3.12"
+  PYTHONUNBUFFERED: "1"
+  FORCE_COLOR: "1"
+
+jobs:
+  run:
+    name: Reproduce PyArrow Build Failure on MacOS 13 Runner
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-13]
+        python-version: ['3.12']
+
+    steps:
+      - name: Set Up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Ensure Latest Pip
+        run: python -m pip install --upgrade pip
+
+      - name: Install Arrow
+        run: brew install apache-arrow@13.0.0
+
+      - name: Install PyArrow
+        run: pip install pyarrow==13.0.0
