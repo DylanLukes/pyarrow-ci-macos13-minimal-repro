@@ -29,5 +29,17 @@ jobs:
       - name: Install Arrow
         run: brew install apache-arrow
 
-      - name: Install PyArrow
-        run: pip install pyarrow==13.0.0
+      - name: Install Build Prerequisites
+        run: |
+          echo "On newer python pkg_resources is vendored by setuptools."
+          pip install Cython numpy setuptools
+
+      - name: Install PyArrow (With Patch)
+        run: |
+          git clone https://github.com/DylanLukes/arrow.git
+          cd arrow/python
+          git checkout gh-38391
+          python setup.py bdist
+
+      # - name: Install PyArrow (Without Patch)
+      #   run: pip install pyarrow==13.0.0
