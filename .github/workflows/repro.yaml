@@ -32,13 +32,13 @@ jobs:
       - name: Install Build Prerequisites
         run: |
           echo "On newer python pkg_resources is vendored by setuptools."
-          pip install Cython numpy setuptools
+          pip install Cython==0.29.36 numpy setuptools
 
       - name: Install PyArrow (With Patch)
         run: |
           git clone https://github.com/DylanLukes/arrow.git
           cd arrow/python
-          git checkout gh-38391
+          git checkout gh-38391-on-13.0.0
           python setup.py bdist
 
       # - name: Install PyArrow (Without Patch)
